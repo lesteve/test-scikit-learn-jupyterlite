@@ -1,0 +1,35 @@
+name: test-jupyterlite
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  # daily scheduled build at 4am
+  schedule:
+    - cron: "0 4 * * *"
+
+# Cancel in-progress workflows when pushing
+# a new commit on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-jupyterlite:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - run: pip install pytest-playwright
+      - run: playwright install chromium
+      - run: pytest test_jupyterlite.py
