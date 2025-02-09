@@ -17,4 +17,4 @@ def test_pyodide_kernel(page, url):
     page.get_by_role("textbox").locator("div").click()
     page.keyboard.type('print("kernel ready")')
     page.keyboard.press("Shift+Enter")
-    expect(page.get_by_text("kernel ready", exact=True)).to_be_visible(timeout=20_000)
+    expect(page.get_by_text("kernel ready", exact=True)).to_be_visible(timeout=30_000)

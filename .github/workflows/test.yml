@@ -32,4 +32,4 @@ jobs:
 
       - run: pip install pytest-playwright
       - run: playwright install chromium
-      - run: pytest test_jupyterlite.py
+      - run: pytest test_jupyterlite.py --durations=0
