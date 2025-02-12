@@ -11,7 +11,7 @@ on:
       - main
   # daily scheduled build at 4am
   schedule:
-    - cron: "0 4 * * *"
+    - cron: "2/5 4 * * *"
 
 # Cancel in-progress workflows when pushing
 # a new commit on the same branch
@@ -32,4 +32,9 @@ jobs:
 
       - run: pip install pytest-playwright
       - run: playwright install chromium
-      - run: pytest test_jupyterlite.py --durations=0
+      - run: pytest test_jupyterlite.py --tracing on --durations=0
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: traces
+          path: test-results
