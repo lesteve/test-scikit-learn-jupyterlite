@@ -14,6 +14,7 @@ from playwright.sync_api import expect
 def test_pyodide_kernel(page, url):
     page.goto(url)
     page.get_by_text("Python (Pyodide)").first.click()
+    time.sleep(5)
     page.get_by_role("textbox").locator("div").click()
     page.keyboard.type('(20 + 25) ** 2')
     page.keyboard.press("Shift+Enter")
