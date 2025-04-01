@@ -18,7 +18,7 @@ def test_pyodide_kernel(page, url):
             page.goto(url)
             page.get_by_text("Python (Pyodide)").first.click()
             break
-        except TimeoutError:
+        except Exception:
             print(f"failure on attempt {n_attempt}")
             time.sleep(5)
             if n_attempt == max_attempt - 1:
