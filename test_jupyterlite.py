@@ -16,10 +16,10 @@ def test_pyodide_kernel(page, url):
     for n_attempt in range(max_attempts):
         try:
             page.goto(url)
-            pyodide_kernel_buttons = page.get_by_text("Python (Pyodide)")
-            expect(pyodide_kernel_buttons.first).to_be_visible(timeout=30_000)
+            pyodide_kernel_button = page.get_by_text("Python (Pyodide)").first
+            expect(pyodide_kernel_button).to_be_visible(timeout=30_000)
             print("Pyodide kernel button found")
-            button.first.click()
+            pyodide_kernel_button.click()
             break
         except Exception as exc:
             print(f"failure on attempt {n_attempt} {exc.__class__}\n{exc}")
