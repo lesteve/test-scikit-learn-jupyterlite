@@ -21,7 +21,7 @@ def test_pyodide_kernel(page, url):
         except Exception:
             print(f"failure on attempt {n_attempt}")
             time.sleep(5)
-            if n_attempt == max_attempt - 1:
+            if n_attempt == max_attempts - 1:
                 raise
 
     time.sleep(5)
