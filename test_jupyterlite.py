@@ -16,10 +16,10 @@ def test_pyodide_kernel(page, url):
     for n_attempt in range(max_attempts):
         try:
             page.goto(url)
-            pyodide_kernel_buttons = page.get_by_text("Python (Pyodide)")
-            expect(pyodide_kernel_buttons.first).to_be_visible(timeout=30_000)
-            print('Pyodide kernel pyodide_kernel_buttons found')
-            button.first.click()
+            pyodide_kernel_button = page.get_by_text("Python (Pyodide)").first
+            expect(pyodide_kernel_button).to_be_visible(timeout=30_000)
+            print("Pyodide kernel button found")
+            pyodide_kernel_button.click()
             break
         except Exception as exc:
             print(f"failure on attempt {n_attempt} {exc.__class__}\n{exc}")
@@ -35,6 +35,25 @@ def test_pyodide_kernel(page, url):
     page.keyboard.type('print("kernel ready")')
     page.keyboard.press("Shift+Enter")
     expect(page.get_by_text("kernel ready", exact=True)).to_be_visible(timeout=30_000)
-    page.keyboard.type("import sklearn; print('sklearn ok')")
+
+    scikit_learn_import_lines = []
+    if "dev" in url:
+        # For now need to import dependencies before piplite.installing dev
+        # scikit-learn wheel, see
+        # https://github.com/pyodide/micropip/issues/223
+        scikit_learn_import_lines.extend(
+            [
+                "import joblib",
+                "import threadpoolctl",
+                "import scipy",
+                "import piplite",
+                "await piplite.install(\n"
+                "    scikit-learn==1.7.dev0,\n"
+                "    index_urls='https://pypi.anaconda.org/scientific-python-nightly-wheels/simple')\n",
+            ]
+        )
+
+    scikit_learn_import_lines.extend(["import sklearn", 'print("sklearn ok")'])
+    page.keyboard.type("\n".join(scikit_learn_import_lines))
     page.keyboard.press("Shift+Enter")
     expect(page.get_by_text("sklearn ok", exact=True)).to_be_visible(timeout=30_000)
