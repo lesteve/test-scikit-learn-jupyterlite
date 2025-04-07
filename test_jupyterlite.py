@@ -32,3 +32,6 @@ def test_pyodide_kernel(page, url):
     page.keyboard.type('print("kernel ready")')
     page.keyboard.press("Shift+Enter")
     expect(page.get_by_text("kernel ready", exact=True)).to_be_visible(timeout=30_000)
+    page.keyboard.type("import sklearn; print('sklearn ok')")
+    page.keyboard.press("Shift+Enter")
+    expect(page.get_by_text("sklearn ok", exact=True)).to_be_visible(timeout=30_000)
