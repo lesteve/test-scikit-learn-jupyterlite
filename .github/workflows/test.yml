@@ -9,9 +9,10 @@ on:
   pull_request:
     branches:
       - main
-  # daily scheduled build at 4am
+  # hourly schedule at minute 12 (to avoid peaks on round minutes 0 and 5, I
+  # seem to vaguely remember something like this)
   schedule:
-    - cron: "2/5 * * * *"
+    - cron: "12 * * * *"
 
 # Cancel in-progress workflows when pushing
 # a new commit on the same branch
